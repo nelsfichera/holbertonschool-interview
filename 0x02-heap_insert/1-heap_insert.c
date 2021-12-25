@@ -65,7 +65,7 @@ heap_t *heap_insert(heap_t **root, int value)
 	for (; scout < max && node_array[scout]; scout++)
 		scout += 0;
 
-	parent = node_array[(scout - (2 - scout % 2)) /2];
+	parent = node_array[(scout - (2 - scout % 2)) / 2];
 	insert = binary_tree_node(parent, value);
 	if (!insert)
 		return (NULL);
