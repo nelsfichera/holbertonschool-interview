@@ -1,86 +1,84 @@
 #include "binary_trees.h"
 /**
- * heap_insert_aux - inserts a value into a max binary heap
- * @root: double pointer to the root node of The Heap
- * @value: value stored in the inserted node 
- *
- * Return: pointer to the inserted node on success, null on failure
+ * heap_complete_aux - gets the height of the left most branch
+ * @node: the root node of the tree to find the height
+ * Return: height of binary if complete, 0 on failure
  */
 
-heap_t *heap_insert_aux(heap_t **root, int value, int lvl, int max)
+int heap_complete_aux(heap_t *node)
 {
-	heap_t *new, *head;
+	int height = 0;
 
-	head = *root;
-	if (lvl == max) {
-		while (head->parent !=NULL) {
-			head = head->parent;
-		}
-		new = heap_insert_aux(&head->right, value, lvl + 1, max);
-		return (new);
+	while (node)
+	{
+		height++;
+		node = node->left;
 	}
-	if (head->left == NULL) {
-		new = malloc(sizeof(heap_t));
-		if (new == NULL) {
-			return (NULL);
-		}
-		new->right = NULL;
-		new->left = NULL;
-		new->n = value;
-		head->left = new;
-		new->parent = head;
-		while (head != NULL && new->n > head->n) {
-			value = head->n;
-			head->n = new->n;
-			new = head;
-			head = head->parent;
-		}
-	} else if (head->right == NULL) {
-		new = malloc(sizeof(heap_t));
-		if (new == NULL) {
-			return (NULL);
-		}
-		new->right = NULL;
-		new->left = NULL;
-		new->n = value;
-		head->right = new;
-		new->parent = head;
-		while (head != NULL && new->n > head->n) {
-			value = head->n;
-			head->n = new->n;
-			new->n = value;
-			new = head;
-			head = head->parent;
-		}
-		} else {
-			new = heap_insert_aux(&head->left, value, lvl + 1, max);
-		}
-		return (new);
+	return (height);
 }
 
+/**
+ * heap_to_array - Arranges nodes of a binary tree in an array
+ * @node: A binary tree (root) node
+ * @array: The array in which to place pointers to the nodes
+ * @index: The index of the current node
+ */
+void heap_to_array(heap_t *node, heap_t **array, int index)
+{
+	int index_left = index * 2 + 1;
+	int index_right = index * 2 + 2;
+
+	if (!node)
+		return;
+	array[index] = node;
+	heap_to_array(node->left, array, index_left);
+	heap_to_array(node->right, array, index_right);
+}
+/**
+ * heap_insert - Insert a value into a Max Binary Heap
+ *
+ * @root: Double pointer to the root node of the Heap
+ * @value: The value to store in the node to be inserted
+ *
+ * Return: Pointer to the inserted node
+ */
 heap_t *heap_insert(heap_t **root, int value)
 {
-	heap_t *new, *head;
-	int max = 0;
+	heap_t *insert = NULL, *parent = NULL;
+	heap_t **node_array = NULL;
+	int height = 0, max = 0, scout = 0;
 
-	if (*root == NULL) {
-		new = malloc(sizeof(heap_t));
-		if (new == NULL) {
-			return (NULL);
-		}
-		new->right = NULL;
-		new->left = NULL;
-		new->n = value;
-		*root = new;
-		return (*root);
+	if (!root)
+		return (NULL);
+	if (!*root)
+	{
+		insert = binary_tree_node(*root, value);
+		*root = insert;
+		return (insert);
 	}
-	head = *root;
+	height = heap_complete_aux(*root);
+	max = (1 << height) - 1;
+	node_array = (heap_t **)calloc(max, sizeof(heap_t *));
+	if (!node_array)
+		return (NULL);
+	heap_to_array(*root, node_array, 0);
+	for (; scout < max && node_array[scout]; scout++)
+		scout += 0;
 
-	while (head->right != NULL) {
-		head = head->right;
-		max++;
+	parent = node_array[(scout - (2 - scout % 2)) /2];
+	insert = binary_tree_node(parent, value);
+	if (!insert)
+		return (NULL);
+	if (scout % 2)
+		parent->left = insert;
+	else
+		parent->right = insert;
+	while (parent && value >= parent->n)
+	{
+		insert->n = parent->n;
+		parent->n = value;
+		insert = parent;
+		parent = parent->parent;
 	}
-	head = *root;
-	new = heap_insert_aux(root, value, 0, max + 1);
-	return (new);
+	return (insert);
 }
