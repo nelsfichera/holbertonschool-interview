@@ -1,10 +1,10 @@
+#include "lists.h"
 /**
  * is_palindrome - checks if a singly linked list is a plaindrome
  * @head: pointer to head of link list
  * Return: 0 if not plaindrome, 1 if palindrome
  * &empty string = palindrome .
  */
-#include "lists.h"
 
 int is_palindrome(listint_t **head)
 {
