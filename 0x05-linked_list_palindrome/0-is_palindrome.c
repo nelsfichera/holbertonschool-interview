@@ -11,14 +11,19 @@ int is_palindrome(listint_t **head)
 	listint_t *start = *head, *length = *head;
 	listint_t *end = *head, *restart = *head;
 	int len = 0, i = 0, j;
-
+    /* return true on 0 length */
 	if (!length)
 		return (1);
+    /* iterate through list */
 	while (length)
 	{
 		len++;
 		length = length->next;
 	}
+    /*
+     * compare lists by moving i & j,
+     *  using start and end
+     */
 	while (i < len / 2)
 	{
 		j = i;
@@ -27,8 +32,10 @@ int is_palindrome(listint_t **head)
 			end = end->next;
 			j++;
 		}
+		/* return 0 on failure*/
 		if (start->n != end->n)
 			return (0);
+		/* move end back to beginning of list */
 		end = restart;
 		start = start->next;
 		i++;
