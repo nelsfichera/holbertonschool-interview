@@ -9,6 +9,7 @@ def printvalues(stats, size):
         if stats[statarr[i]] > 0:
             print("{}: {}".format(statarr[i], stats[statarr[i]]))
 
+
 count = 0
 size = 0
 statdict = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
