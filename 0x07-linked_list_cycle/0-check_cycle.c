@@ -13,12 +13,13 @@ int check_cycle(listint_t *list)
 		return (0);
 	ptra = list;
 	ptri = list;
-	while (ptri->next)
+	while (ptri->next != NULL)
 	{
 		ptra = ptra->next;
 		ptri = ptri->next;
 		if (ptri->next == NULL)
-			return (0);
+			break;
+		ptri = ptri->next;
 		if (ptra == ptri)
 			return (1);
 	}
