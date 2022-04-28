@@ -1,7 +1,7 @@
 #include "search_algos.h"
 
 /**
- * recursive - searches through a binary tree 
+ * recursive - searches through a binary tree
  * recursively for the first instance of the desired value
  * @array: input array
  * @left: left most index
