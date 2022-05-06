@@ -1,34 +1,31 @@
 #!/usr/bin/python3
-"""Write a recursive function that queries the Reddit API, 
-    parses the title of all hot articles, 
-    and prints a sorted count of given keywords 
-        (case-insensitive, delimited by spaces"""
+"""0x13"""
 import requests
-from sys import argv
 
 
-def count_words(subreddit, word_list, after="", counter={}, check=0):
-    """does the thing"""
-    if check == 0:
+def count_words(subreddit, word_list=[], wordcount={}, after=""):
+    """returns all hot items of a subreddit recursively"""
+    if after == "":
+        url = 'https://www.reddit.com/r/{}/hot.json'.format(subreddit)
         for word in word_list:
-            counter[word] = 0
-    headers = {'User-Agent': 'steve'}
-    json = requests.get('https://api.reddit.com/r/{}/hot?after={}'.
-                        format(subreddit, after),
-                        headers=headers).json()
-    try:
-        key = json['data']['after']
-        parent = json['data']['children']
-        for obj in parent:
-            for word in counter:
-                counter[word] += obj['data']['title'].lower().split(' ').count(
-                    word.lower())
-        if key:
-            count_words(subreddit, word_list, key, counter, 1)
-        else:
-            res = sorted(counter.items(), key=lambda i: i[1], reverse=True)
-            for key, value in res:
-                if value != 0:
-                    print('{}: {}'.format(key, value))
-    except Exception:
-        return None
+            wordcount[word.lower()] = 0
+    else:
+        url = 'https://www.reddit.com/r/{}/hot.json?after={}'\
+               .format(subreddit, after)
+
+    header = {'User-Agent': 'Python:title.parser:v0.1 (by /u/willy)'}
+    res = requests.get(url, headers=header, allow_redirects=False)
+    if (res.status_code != 200):
+        return
+    for post in res.json()['data']['children']:
+        for word in post['data']['title'].split():
+            if word.lower() in wordcount.keys():
+                wordcount[word.lower()] += 1
+
+    after = res.json()['data']['after']
+    if after is None:
+        for key in sorted(wordcount.items(), key=lambda x: x[1], reverse=True):
+            if key[1] > 0:
+                print("{}: {}".format(key[0], key[1]))
+        return
+    count_words(subreddit, word_list, wordcount, after)
