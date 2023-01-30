@@ -36,7 +36,7 @@
 
 ## 0x0B. Menger sponge 
 ### Write a function that draws a 2D Menger Sponge.
-
+![Menger sponge image](./readme_imgs/menger.png)
 ## 0x0C. N Queens 
 ### The N queens puzzle is the challenge of placing N non-attacking queens on an N×N chessboard. Write a program that solves the N queens problem.
 
@@ -106,4 +106,8 @@
 ## 0x22. Prime Game
 ### Maria and Ben are playing a game. Given a set of consecutive integers starting from 1 up to and including n, they take turns choosing a prime number from the set and removing that number and its multiples from the set. The player that cannot make a move loses the game.
 
-### They play x rounds of the game, where n may be different for each round. Assuming Maria always goes first and both players play optimally, determine who the winner of each game is.
+### They play x rounds of the game, where n may be different for each round. Assuming Maria always goes first and both players play optimally, determine who the winner of each game is. 
+
+## Author
+### Nels Fichera [LinkedIn](https://www.linkedin.com/nelsfichera)
+#### Nels Fichera is a software developer working in architecture during the day, and going to Holberton School at night. This is their repository of common interview questions, which were completed without the use of Google. Interview questions are quite challenging, and some of them do not fully execute what they were intended to execute, but that's problem solving. I love the challenge of an interview algorithm, but I think my talents shine in day-to-day problem solving, where getting it right the first time is important, but there are opportunities to meld a solution to the team using it. 
